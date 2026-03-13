@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shortlink.mapper.ShortLinkMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.shortlink.entity.ShortLink">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="short_code" property="shortCode" jdbcType="VARCHAR"/>
+        <result column="long_url" property="longUrl" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="expired_at" property="expiredAt" jdbcType="TIMESTAMP"/>
+        <result column="click_count" property="clickCount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.shortlink.entity.ShortLink">
+        INSERT INTO short_link (id, short_code, long_url, created_at, expired_at, click_count)
+        VALUES (#{id}, #{shortCode}, #{longUrl}, #{createdAt}, #{expiredAt}, #{clickCount})
+    </insert>
+
+    <select id="selectAllShortCodes" resultType="string">
+        SELECT short_code FROM short_link
+    </select>
+
+    <select id="selectByShortCode" resultMap="BaseResultMap">
+        SELECT * FROM short_link WHERE short_code = #{shortCode}
+    </select>
+
+    <update id="incrementClickCount">
+        UPDATE short_link SET click_count = click_count + 1 WHERE short_code = #{shortCode}
+    </update>
+
+</mapper>
